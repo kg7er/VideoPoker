@@ -1,0 +1,566 @@
+[gd_scene load_steps=9 format=3 uid="uid://dyhhwpguw6156"]
+
+[ext_resource type="FontFile" uid="uid://7q4efxy8qaex" path="res://build/assets/impact.ttf" id="1_218ou"]
+[ext_resource type="Script" path="res://ui.gd" id="1_ofd51"]
+[ext_resource type="Theme" uid="uid://dieco6bc5mf6i" path="res://poker_theme.tres" id="1_vcsyx"]
+[ext_resource type="Texture2D" uid="uid://ym0xswj1risw" path="res://build/assets/deal_button.png" id="4_nqafx"]
+[ext_resource type="Texture2D" uid="uid://c0t0gtf8dfuje" path="res://build/assets/info_button.png" id="5_vpaws"]
+[ext_resource type="Texture2D" uid="uid://b3ttdhfusbe31" path="res://build/assets/bet_one.png" id="5_vq0pp"]
+[ext_resource type="Texture2D" uid="uid://bvnese3ctn4n7" path="res://build/assets/bet_max.png" id="7_bjbga"]
+[ext_resource type="Texture2D" uid="uid://db5wpo8tqdrjg" path="res://build/assets/$1 Sign.svg" id="8_wyl8y"]
+
+[node name="UI" type="CanvasLayer"]
+script = ExtResource("1_ofd51")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_vcsyx")
+
+[node name="CreditLabel" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 1025.0
+offset_top = 750.0
+offset_right = 1260.0
+offset_bottom = 798.0
+theme_override_colors/font_color = Color(0.752941, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.878431, 0.878431, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("1_218ou")
+theme_override_font_sizes/font_size = 36
+text = "CREDIT"
+
+[node name="HandsLabel" type="Label" parent="Control"]
+visible = false
+layout_mode = 0
+offset_left = 50.0
+offset_top = 851.0
+offset_right = 134.0
+offset_bottom = 896.0
+theme_override_fonts/font = ExtResource("1_218ou")
+theme_override_font_sizes/font_size = 30
+text = "HANDS"
+
+[node name="BetLabel" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 616.0
+offset_top = 745.0
+offset_right = 668.0
+offset_bottom = 786.0
+theme_override_colors/font_color = Color(0.847059, 0.847059, 0.847059, 1)
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "Bet"
+
+[node name="WinAmtLabel" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 60.0
+offset_top = 750.0
+offset_right = 125.0
+offset_bottom = 798.0
+theme_override_colors/font_color = Color(0.752941, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.878431, 0.878431, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("1_218ou")
+theme_override_font_sizes/font_size = 40
+text = "WIN "
+
+[node name="WinHandLabel" type="Label" parent="Control"]
+visible = false
+layout_mode = 0
+offset_left = 583.0
+offset_top = 744.0
+offset_right = 696.0
+offset_bottom = 792.0
+theme_override_colors/font_color = Color(0.752941, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_218ou")
+theme_override_font_sizes/font_size = 36
+
+[node name="Held1Label" type="Label" parent="Control"]
+layout_mode = 2
+offset_left = 124.0
+offset_top = 415.0
+offset_right = 200.0
+offset_bottom = 468.0
+theme = ExtResource("1_vcsyx")
+theme_override_colors/font_color = Color(0.752941, 0.752941, 0.752941, 1)
+theme_override_fonts/font = ExtResource("1_218ou")
+theme_override_font_sizes/font_size = 36
+text = "HELD"
+
+[node name="Held2Label" type="Label" parent="Control"]
+layout_mode = 2
+offset_left = 368.0
+offset_top = 415.0
+offset_right = 444.0
+offset_bottom = 468.0
+theme = ExtResource("1_vcsyx")
+theme_override_colors/font_color = Color(0.752941, 0.752941, 0.752941, 1)
+theme_override_fonts/font = ExtResource("1_218ou")
+theme_override_font_sizes/font_size = 36
+text = "HELD"
+
+[node name="Held3Label" type="Label" parent="Control"]
+layout_mode = 2
+offset_left = 612.0
+offset_top = 415.0
+offset_right = 688.0
+offset_bottom = 468.0
+theme = ExtResource("1_vcsyx")
+theme_override_colors/font_color = Color(0.752941, 0.752941, 0.752941, 1)
+theme_override_fonts/font = ExtResource("1_218ou")
+theme_override_font_sizes/font_size = 36
+text = "HELD"
+
+[node name="Held4Label" type="Label" parent="Control"]
+layout_mode = 2
+offset_left = 856.0
+offset_top = 415.0
+offset_right = 932.0
+offset_bottom = 468.0
+theme = ExtResource("1_vcsyx")
+theme_override_colors/font_color = Color(0.752941, 0.752941, 0.752941, 1)
+theme_override_fonts/font = ExtResource("1_218ou")
+theme_override_font_sizes/font_size = 36
+text = "HELD"
+
+[node name="Held5Label" type="Label" parent="Control"]
+layout_mode = 2
+offset_left = 1100.0
+offset_top = 415.0
+offset_right = 1176.0
+offset_bottom = 468.0
+theme = ExtResource("1_vcsyx")
+theme_override_colors/font_color = Color(0.752941, 0.752941, 0.752941, 1)
+theme_override_fonts/font = ExtResource("1_218ou")
+theme_override_font_sizes/font_size = 36
+text = "HELD"
+
+[node name="PayTableGrid" type="GridContainer" parent="Control"]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 36.0
+offset_right = 946.0
+offset_bottom = 373.0
+theme_override_constants/h_separation = 87
+theme_override_constants/v_separation = -4
+columns = 6
+
+[node name="TableLabel0" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "ROYAL FLUSH"
+
+[node name="TableLabel1" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "250"
+horizontal_alignment = 2
+
+[node name="TableLabel2" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "500"
+horizontal_alignment = 2
+
+[node name="TableLabel3" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "750"
+horizontal_alignment = 2
+
+[node name="TableLabel4" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "1000"
+horizontal_alignment = 2
+
+[node name="TableLabel5" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "4000"
+horizontal_alignment = 2
+
+[node name="TableLabel6" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "STRAIGHT FLUSH"
+
+[node name="TableLabel7" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "50"
+horizontal_alignment = 2
+
+[node name="TableLabel8" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "100"
+horizontal_alignment = 2
+
+[node name="TableLabel9" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "150"
+horizontal_alignment = 2
+
+[node name="TableLabel10" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "200"
+horizontal_alignment = 2
+
+[node name="TableLabel11" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "250"
+horizontal_alignment = 2
+
+[node name="TableLabel12" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "4 OF A KIND"
+
+[node name="TableLabel13" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "25	"
+horizontal_alignment = 2
+
+[node name="TableLabel14" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "50"
+horizontal_alignment = 2
+
+[node name="TableLabel15" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "75"
+horizontal_alignment = 2
+
+[node name="TableLabel16" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "100"
+horizontal_alignment = 2
+
+[node name="TableLabel17" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "125
+"
+horizontal_alignment = 2
+
+[node name="TableLabel18" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "FULL HOUSE"
+
+[node name="TableLabel19" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "9"
+horizontal_alignment = 2
+
+[node name="TableLabel20" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "18"
+horizontal_alignment = 2
+
+[node name="TableLabel21" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "27"
+horizontal_alignment = 2
+
+[node name="TableLabel22" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "36"
+horizontal_alignment = 2
+
+[node name="TableLabel23" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "45"
+horizontal_alignment = 2
+
+[node name="TableLabel24" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "FLUSH"
+
+[node name="TableLabel25" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "6"
+horizontal_alignment = 2
+
+[node name="TableLabel26" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "12"
+horizontal_alignment = 2
+
+[node name="TableLabel27" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "18"
+horizontal_alignment = 2
+
+[node name="TableLabel28" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "24"
+horizontal_alignment = 2
+
+[node name="TableLabel29" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "30"
+horizontal_alignment = 2
+
+[node name="TableLabel30" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "STRAIGHT"
+
+[node name="TableLabel31" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "4"
+horizontal_alignment = 2
+
+[node name="TableLabel32" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "8"
+horizontal_alignment = 2
+
+[node name="TableLabel33" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "12"
+horizontal_alignment = 2
+
+[node name="TableLabel34" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "16"
+horizontal_alignment = 2
+
+[node name="TableLabel35" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "20"
+horizontal_alignment = 2
+
+[node name="TableLabel36" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "3 OF A KIND"
+
+[node name="TableLabel37" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "3"
+horizontal_alignment = 2
+
+[node name="TableLabel38" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "6"
+horizontal_alignment = 2
+
+[node name="TableLabel39" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "9"
+horizontal_alignment = 2
+
+[node name="TableLabel40" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "12"
+horizontal_alignment = 2
+
+[node name="TableLabel41" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "15"
+horizontal_alignment = 2
+
+[node name="TableLabel42" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "TWO PAIR"
+
+[node name="TableLabel43" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "2"
+horizontal_alignment = 2
+
+[node name="TableLabel44" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "4"
+horizontal_alignment = 2
+
+[node name="TableLabel45" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "6"
+horizontal_alignment = 2
+
+[node name="TableLabel46" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "8"
+horizontal_alignment = 2
+
+[node name="TableLabel47" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "10"
+horizontal_alignment = 2
+
+[node name="TableLabel48" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "JACKS OR BETTER"
+
+[node name="TableLabel49" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "1"
+horizontal_alignment = 2
+
+[node name="TableLabel50" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "2"
+horizontal_alignment = 2
+
+[node name="TableLabel51" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "3"
+horizontal_alignment = 2
+
+[node name="TableLabel52" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "4"
+horizontal_alignment = 2
+
+[node name="TableLabel53" type="Label" parent="Control/PayTableGrid"]
+layout_mode = 2
+theme = ExtResource("1_vcsyx")
+theme_override_fonts/font = ExtResource("1_218ou")
+text = "5"
+horizontal_alignment = 2
+
+[node name="DealDrawButton" type="TextureButton" parent="Control"]
+layout_mode = 0
+offset_left = 1098.0
+offset_top = 835.0
+offset_right = 1198.0
+offset_bottom = 885.0
+texture_normal = ExtResource("4_nqafx")
+
+[node name="InfoButton" type="TextureButton" parent="Control"]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 835.0
+offset_right = 158.0
+offset_bottom = 885.0
+texture_normal = ExtResource("5_vpaws")
+
+[node name="BetOneButton" type="TextureButton" parent="Control"]
+layout_mode = 0
+offset_left = 801.0
+offset_top = 835.0
+offset_right = 901.0
+offset_bottom = 885.0
+texture_normal = ExtResource("5_vq0pp")
+
+[node name="BetMaxButton" type="TextureButton" parent="Control"]
+layout_mode = 0
+offset_left = 921.0
+offset_top = 835.0
+offset_right = 1021.0
+offset_bottom = 885.0
+texture_normal = ExtResource("7_bjbga")
+
+[node name="$1Button" type="TextureButton" parent="Control"]
+layout_mode = 0
+offset_left = 619.0
+offset_top = 827.0
+offset_right = 694.0
+offset_bottom = 902.0
+scale = Vector2(0.75, 0.75)
+texture_normal = ExtResource("8_wyl8y")
+
+[connection signal="pressed" from="Control/DealDrawButton" to="." method="_on_deal_draw_button_pressed"]
+[connection signal="pressed" from="Control/InfoButton" to="." method="_on_info_button_pressed"]
+[connection signal="pressed" from="Control/BetOneButton" to="." method="_on_bet_one_button_pressed"]
+[connection signal="pressed" from="Control/BetMaxButton" to="." method="_on_bet_max_button_pressed"]

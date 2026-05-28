@@ -1,0 +1,171 @@
+[gd_scene load_steps=13 format=3 uid="uid://rjqeamwpwthv"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_6d1bb"]
+[ext_resource type="Script" path="res://Card0.gd" id="2_fsyv5"]
+[ext_resource type="Script" path="res://Card1.gd" id="3_opscq"]
+[ext_resource type="Script" path="res://Card2.gd" id="4_metak"]
+[ext_resource type="Script" path="res://Card3.gd" id="5_mc6yh"]
+[ext_resource type="Script" path="res://Card4.gd" id="6_st0hg"]
+[ext_resource type="Texture2D" uid="uid://f5ih7lrttk1o" path="res://build/assets/dk_blue.png" id="7_0n4p0"]
+[ext_resource type="PackedScene" uid="uid://dyhhwpguw6156" path="res://ui.tscn" id="7_1h2sb"]
+[ext_resource type="Texture2D" uid="uid://bxldi8skajqhx" path="res://build/assets/job.png" id="8_4rd5p"]
+[ext_resource type="AudioStream" uid="uid://c13sxqv1qcnmd" path="res://build/assets/audio/CasinoSounds1.mp3" id="10_x3kbr"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_uj5qs"]
+
+[sub_resource type="SystemFont" id="SystemFont_af1fc"]
+
+[node name="Main" type="Node2D"]
+material = SubResource("CanvasItemMaterial_uj5qs")
+script = ExtResource("1_6d1bb")
+
+[node name="Card0" type="Sprite2D" parent="."]
+script = ExtResource("2_fsyv5")
+
+[node name="Card1" type="Sprite2D" parent="."]
+script = ExtResource("3_opscq")
+
+[node name="Card2" type="Sprite2D" parent="."]
+script = ExtResource("4_metak")
+
+[node name="Card3" type="Sprite2D" parent="."]
+script = ExtResource("5_mc6yh")
+
+[node name="Card4" type="Sprite2D" parent="."]
+script = ExtResource("6_st0hg")
+
+[node name="Dk_Blue" type="Sprite2D" parent="."]
+position = Vector2(653, 206)
+scale = Vector2(1.37979, 1.05941)
+texture = ExtResource("7_0n4p0")
+
+[node name="InfoBox" type="RichTextLabel" parent="."]
+offset_left = 959.0
+offset_top = 44.0
+offset_right = 1262.0
+offset_bottom = 368.0
+theme_override_fonts/normal_font = SubResource("SystemFont_af1fc")
+theme_override_font_sizes/normal_font_size = 18
+text = "Now is the time for all good men to come to the aid of their country. The quick, brown fox jumps over the lazy dogs and laughs his ass off. If at first you don't succeed, find somebody to blame."
+
+[node name="JOBLogo" type="Sprite2D" parent="."]
+position = Vector2(1113, 204)
+scale = Vector2(0.922222, 0.92)
+texture = ExtResource("8_4rd5p")
+
+[node name="UI" parent="." instance=ExtResource("7_1h2sb")]
+
+[node name="B5Rect" type="ColorRect" parent="."]
+offset_left = 793.0
+offset_top = 25.0
+offset_right = 943.0
+offset_bottom = 381.0
+color = Color(0.752941, 0, 0, 1)
+
+[node name="B4Rect" type="ColorRect" parent="."]
+offset_left = 645.0
+offset_top = 29.0
+offset_right = 793.0
+offset_bottom = 385.0
+color = Color(0.752941, 0, 0, 1)
+
+[node name="B3Rect" type="ColorRect" parent="."]
+offset_left = 516.0
+offset_top = 24.0
+offset_right = 645.0
+offset_bottom = 380.0
+color = Color(0.752941, 0, 0, 1)
+
+[node name="B2Rect" type="ColorRect" parent="."]
+offset_left = 381.0
+offset_top = 25.0
+offset_right = 513.0
+offset_bottom = 381.0
+color = Color(0.752941, 0, 0, 1)
+
+[node name="B1Rect" type="ColorRect" parent="."]
+offset_left = 257.0
+offset_top = 27.0
+offset_right = 380.0
+offset_bottom = 383.0
+color = Color(0.752941, 0, 0, 1)
+
+[node name="LeftLine2D" type="Line2D" parent="."]
+position = Vector2(-2, -1.59391)
+scale = Vector2(1, 0.981298)
+points = PackedVector2Array(28, 30, 28, 389)
+width = 7.0
+default_color = Color(0.878431, 0.878431, 0, 1)
+antialiased = true
+
+[node name="RightLine2D" type="Line2D" parent="."]
+position = Vector2(1252, -10.3043)
+scale = Vector2(1, 1.01087)
+points = PackedVector2Array(28, 35, 28, 138, 28, 389)
+width = 7.0
+default_color = Color(0.878431, 0.878431, 0, 1)
+
+[node name="TopLine2D" type="Line2D" parent="."]
+position = Vector2(-8.00646, -29.9999)
+scale = Vector2(1.16983, 1.45812)
+points = PackedVector2Array(26, 37, 1104, 37)
+width = 7.0
+default_color = Color(0.878431, 0.878431, 0, 1)
+
+[node name="BottomLine2D" type="Line2D" parent="."]
+position = Vector2(1313.73, 432)
+rotation = 3.14159
+scale = Vector2(1.16962, 1.45652)
+points = PackedVector2Array(26, 34, 1104, 34)
+width = 7.0
+default_color = Color(0.878431, 0.878431, 0, 1)
+joint_mode = 2
+
+[node name="Sep1" type="Line2D" parent="."]
+position = Vector2(228, -6)
+points = PackedVector2Array(28, 35, 28, 389)
+width = 3.0
+default_color = Color(0.878431, 0.878431, 0, 1)
+
+[node name="Sep2" type="Line2D" parent="."]
+position = Vector2(352, -6)
+points = PackedVector2Array(28, 35, 28, 389)
+width = 3.0
+default_color = Color(0.878431, 0.878431, 0, 1)
+
+[node name="Sep3" type="Line2D" parent="."]
+position = Vector2(487, -6)
+points = PackedVector2Array(28, 35, 28, 389)
+width = 3.0
+default_color = Color(0.878431, 0.878431, 0, 1)
+
+[node name="Sep4" type="Line2D" parent="."]
+position = Vector2(618, -6)
+points = PackedVector2Array(28, 35, 28, 389)
+width = 3.0
+default_color = Color(0.878431, 0.878431, 0, 1)
+
+[node name="Sep5" type="Line2D" parent="."]
+position = Vector2(764, -6)
+points = PackedVector2Array(28, 35, 28, 389)
+width = 3.0
+default_color = Color(0.878431, 0.878431, 0, 1)
+
+[node name="Sep6" type="Line2D" parent="."]
+position = Vector2(915, -6)
+points = PackedVector2Array(28, 35, 28, 389)
+width = 3.0
+default_color = Color(0.878431, 0.878431, 0, 1)
+
+[node name="WinSound" type="AudioStreamPlayer" parent="."]
+
+[node name="PayoutTimer" type="Timer" parent="."]
+wait_time = 0.025
+
+[node name="FlipTimer" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+
+[node name="CrowdNoise" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_x3kbr")
+volume_db = -21.86

@@ -1,0 +1,3 @@
+* 'Bet One' button doesn't work right when credits are less that $5.
+* Put more info under the 'Info' button: number of 2 Pairs, Trips, etc.
+* Add a background music track.
