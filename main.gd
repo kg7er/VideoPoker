@@ -135,7 +135,11 @@ func _process(_delta): # ========================== This IS the GAME LOOP ======
 		low_credits = credits if credits < low_credits else low_credits
 		if credits < 1:
 			bet_amt = 0
-		print(hand_name) if len(hand_name) > 0 else print(" -- nothing --") # ternary operator!
+		if len(hand_name) > 0:
+			print(hand_name)
+		else:
+			print(" -- nothing --")
+		#print(hand_name) if len(hand_name) > 0 else print(" -- nothing --") # ternary operator!
 		print("Payout: $%d." % win_amt)
 		print("Credits: $%d." % credits)
 		hands_played += 1
