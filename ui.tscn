@@ -1,13 +1,13 @@
 [gd_scene load_steps=9 format=3 uid="uid://dyhhwpguw6156"]
 
-[ext_resource type="FontFile" uid="uid://7q4efxy8qaex" path="res://build/assets/impact.ttf" id="1_218ou"]
-[ext_resource type="Script" path="res://ui.gd" id="1_ofd51"]
+[ext_resource type="FontFile" uid="uid://7q4efxy8qaex" path="res://assets/impact.ttf" id="1_218ou"]
+[ext_resource type="Script" uid="uid://drtm40jpj5ndu" path="res://ui.gd" id="1_ofd51"]
 [ext_resource type="Theme" uid="uid://dieco6bc5mf6i" path="res://poker_theme.tres" id="1_vcsyx"]
-[ext_resource type="Texture2D" uid="uid://ym0xswj1risw" path="res://build/assets/deal_button.png" id="4_nqafx"]
-[ext_resource type="Texture2D" uid="uid://c0t0gtf8dfuje" path="res://build/assets/info_button.png" id="5_vpaws"]
-[ext_resource type="Texture2D" uid="uid://b3ttdhfusbe31" path="res://build/assets/bet_one.png" id="5_vq0pp"]
-[ext_resource type="Texture2D" uid="uid://bvnese3ctn4n7" path="res://build/assets/bet_max.png" id="7_bjbga"]
-[ext_resource type="Texture2D" uid="uid://db5wpo8tqdrjg" path="res://build/assets/$1 Sign.svg" id="8_wyl8y"]
+[ext_resource type="Texture2D" uid="uid://ym0xswj1risw" path="res://assets/deal_button.png" id="4_nqafx"]
+[ext_resource type="Texture2D" uid="uid://c0t0gtf8dfuje" path="res://assets/info_button.png" id="5_vpaws"]
+[ext_resource type="Texture2D" uid="uid://b3ttdhfusbe31" path="res://assets/bet_one.png" id="5_vq0pp"]
+[ext_resource type="Texture2D" uid="uid://bvnese3ctn4n7" path="res://assets/bet_max.png" id="7_bjbga"]
+[ext_resource type="Texture2D" uid="uid://db5wpo8tqdrjg" path="res://assets/$1 Sign.svg" id="8_wyl8y"]
 
 [node name="UI" type="CanvasLayer"]
 script = ExtResource("1_ofd51")
@@ -80,7 +80,7 @@ theme_override_fonts/font = ExtResource("1_218ou")
 theme_override_font_sizes/font_size = 36
 
 [node name="Held1Label" type="Label" parent="Control"]
-layout_mode = 2
+layout_mode = 0
 offset_left = 124.0
 offset_top = 415.0
 offset_right = 200.0
@@ -92,7 +92,7 @@ theme_override_font_sizes/font_size = 36
 text = "HELD"
 
 [node name="Held2Label" type="Label" parent="Control"]
-layout_mode = 2
+layout_mode = 0
 offset_left = 368.0
 offset_top = 415.0
 offset_right = 444.0
@@ -104,7 +104,7 @@ theme_override_font_sizes/font_size = 36
 text = "HELD"
 
 [node name="Held3Label" type="Label" parent="Control"]
-layout_mode = 2
+layout_mode = 0
 offset_left = 612.0
 offset_top = 415.0
 offset_right = 688.0
@@ -116,7 +116,7 @@ theme_override_font_sizes/font_size = 36
 text = "HELD"
 
 [node name="Held4Label" type="Label" parent="Control"]
-layout_mode = 2
+layout_mode = 0
 offset_left = 856.0
 offset_top = 415.0
 offset_right = 932.0
@@ -128,7 +128,7 @@ theme_override_font_sizes/font_size = 36
 text = "HELD"
 
 [node name="Held5Label" type="Label" parent="Control"]
-layout_mode = 2
+layout_mode = 0
 offset_left = 1100.0
 offset_top = 415.0
 offset_right = 1176.0
@@ -142,9 +142,9 @@ text = "HELD"
 [node name="PayTableGrid" type="GridContainer" parent="Control"]
 layout_mode = 0
 offset_left = 36.0
-offset_top = 36.0
+offset_top = 48.0
 offset_right = 946.0
-offset_bottom = 373.0
+offset_bottom = 385.0
 theme_override_constants/h_separation = 87
 theme_override_constants/v_separation = -4
 columns = 6
@@ -269,8 +269,7 @@ horizontal_alignment = 2
 layout_mode = 2
 theme = ExtResource("1_vcsyx")
 theme_override_fonts/font = ExtResource("1_218ou")
-text = "125
-"
+text = "125"
 horizontal_alignment = 2
 
 [node name="TableLabel18" type="Label" parent="Control/PayTableGrid"]

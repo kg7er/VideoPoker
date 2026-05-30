@@ -1,8 +1,10 @@
 extends Node2D
-signal payout_signal(w)
+signal payout_signal(w: int)
 
 # Colors: BG_Blue: 0,0,160  DK_Blue: 0,0,64  Yellow: 224,224,0  Red: 192,0,0
-
+@export var card_textures: Array[Texture2D] #new
+@export var card_back_red: Texture2D
+@export var card_back_blue: Texture2D
 var values: Array[int] # Card values
 var suits: Array[String] # Card suits
 var card: Card
@@ -34,7 +36,7 @@ var rand_card_back: int
 func _ready(): # ===== READY =====
 	randomize() # Reseed the RNG.
 	rand_card_back = randi_range(0,1)
-	#print(rand_card_back)
+
 	for x in range(13): # Fill values array with numbers 2 through 14.
 		values.append(x+2) # 11=J, 12=Q, 13=K, 14=A.
 	suits = ['C','D','H','S'] # Array of the 4 suits.
@@ -69,7 +71,8 @@ func _ready(): # ===== READY =====
 	clear_held_cards()
 	new_hand = true
 	hand_name = ""
-	card_back_color = "blue_card_back.png" if rand_card_back == 0 else "red_card_back.png"
+	
+	#card_back_color = "blue_card_back.png" if rand_card_back == 0 else "red_card_back.png"
 	card_backs_showing = true
 	
 	# Make a fresh deck of cards,
@@ -298,59 +301,55 @@ func show_bet_amt_column():
 	#print('In show_bet_amt_column.')	
 
 func show_cards(h):
-	#$FlipTimer.start()
+	if h.is_empty():
+		return
 	if not held_cards[0]:
-		$Card0.texture = load("res://assets/cards/"+ h[0].get_card_image())
+		#$Card0.texture = load("res://assets/cards/"+ h[0].get_card_image())
+		$Card0.texture = card_textures[h[0].get_card_id()]
 		await $FlipTimer.timeout
 	if not held_cards[1]:
-		$Card1.texture = load("res://assets/cards/"+ h[1].get_card_image())
+		#$Card1.texture = load("res://assets/cards/"+ h[1].get_card_image())
+		$Card1.texture = card_textures[h[1].get_card_id()]
 		await $FlipTimer.timeout
 	if not held_cards[2]:
-		$Card2.texture = load("res://assets/cards/"+ h[2].get_card_image())
+		#$Card2.texture = load("res://assets/cards/"+ h[2].get_card_image())
+		$Card2.texture = card_textures[h[2].get_card_id()]
 		await $FlipTimer.timeout
 	if not held_cards[3]:
-		$Card3.texture = load("res://assets/cards/"+ h[3].get_card_image())
+		#$Card3.texture = load("res://assets/cards/"+ h[3].get_card_image())
+		$Card3.texture = card_textures[h[3].get_card_id()]
 		await $FlipTimer.timeout
 	if not held_cards[4]:
-		$Card4.texture = load("res://assets/cards/"+ h[4].get_card_image())
+		#$Card4.texture = load("res://assets/cards/"+ h[4].get_card_image())
+		$Card4.texture = card_textures[h[4].get_card_id()]
 		await $FlipTimer.timeout
 		
-#	$Card2.texture = load("res://assets/cards/"+ h[2].get_card_image())
-#	await $FlipTimer.timeout
-#	$Card3.texture = load("res://assets/cards/"+ h[3].get_card_image())
-#	await $FlipTimer.timeout
-#	$Card4.texture = load("res://assets/cards/"+ h[4].get_card_image())
-	#$FlipTimer.stop()
 	
 func show_card_backs():
 	#$FlipTimer.start()
+	var chosen_back: Texture2D
+	
+	if rand_card_back == 0:
+		chosen_back = card_back_red
+	else:
+		chosen_back = card_back_blue
 	
 	if not held_cards[0]:
-		$Card0.texture = load("res://assets/cards/" + card_back_color)
+		$Card0.texture = chosen_back
 		await $FlipTimer.timeout
 	if not held_cards[1]:
-		$Card1.texture = load("res://assets/cards/" + card_back_color)
+		$Card1.texture = chosen_back
 		await $FlipTimer.timeout
 	if not held_cards[2]:
-		$Card2.texture = load("res://assets/cards/" + card_back_color)
+		$Card2.texture = chosen_back
 		await $FlipTimer.timeout
 	if not held_cards[3]:
-		$Card3.texture = load("res://assets/cards/" + card_back_color)
+		$Card3.texture = chosen_back
 		await $FlipTimer.timeout
 	if not held_cards[4]:
-		$Card4.texture = load("res://assets/cards/" + card_back_color)
+		$Card4.texture = chosen_back
 		await $FlipTimer.timeout
 		
-#	$Card0.texture = load("res://assets/cards/" + card_back_color)
-#	await $FlipTimer.timeout
-#	$Card1.texture = load("res://assets/cards/" + card_back_color)
-#	await $FlipTimer.timeout
-#	$Card2.texture = load("res://assets/cards/" + card_back_color)
-#	await $FlipTimer.timeout
-#	$Card3.texture = load("res://assets/cards/" + card_back_color)
-#	await $FlipTimer.timeout
-#	$Card4.texture = load("res://assets/cards/" + card_back_color)
-	#$FlipTimer.stop()	
 	
 func open_fresh_deck(): # Should only run once.
 	#print('Opening a fresh deck of cards.')
