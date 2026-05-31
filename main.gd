@@ -33,6 +33,14 @@ var high_credits: int
 var low_credits: int
 var rand_card_back: int
 
+#  ====== NEW TWEEN VARS ======
+var animated_win: float = 0.0
+var animated_credits: float = 0.0
+var last_sound_credit: int = 0
+var payout_tween: Tween
+
+var sound_interval_timer: float = 0.0
+
 func _ready(): # ===== READY =====
 	randomize() # Reseed the RNG.
 	rand_card_back = randi_range(0,1)
@@ -87,7 +95,7 @@ func _ready(): # ===== READY =====
 	
 	#test.append(Sprite2D.new()) # Just testing ...
 	
-func _process(_delta): # ========================== This IS the GAME LOOP ======
+func _process(delta): # ========================== This IS the GAME LOOP ======
 	# === quit game === 
 		# === Deal_Draw input ===
 	if Input.is_action_just_released("Deal_Draw") and new_hand and !is_paying: # spacebar or Deal button
@@ -99,7 +107,6 @@ func _process(_delta): # ========================== This IS the GAME LOOP ======
 				OS.alert("You have no credits! Game OVER!")
 				game_over()
 		else:
-			
 			clear_winning_hand_color()
 			if bet_amt > credits:
 				bet_amt = credits
@@ -175,6 +182,37 @@ func _process(_delta): # ========================== This IS the GAME LOOP ======
 		if Input.is_action_just_pressed("Hold_4"): # 5 key
 			hold_card(4)
 
+# === TWEEN STUFF ADDED ===
+	if is_paying and payout_tween and payout_tween.is_running():
+		# Keep your label text updating smoothly
+		$"UI/Control/WinAmtLabel".text = "WIN " + str(int(animated_win))
+		$"UI/Control/CreditLabel".text = "CREDIT $" + str(int(animated_credits))
+		
+		# --- ROCK-SOLID AUDIO METRONOME ---
+		sound_interval_timer += delta
+		
+		# 0.08 seconds (80 milliseconds) is the sweet spot gap between beats.
+		# If the sound feels too fast or slow, tweak this decimal number!
+		if sound_interval_timer >= 0.08:
+			if $WinSound:
+				#$WinSound.stop() # Interrupts the old tail cleanly
+				$WinSound.play() # Fires the crisp start of the sound
+			sound_interval_timer = 0.0 # Reset the clock for the next beat
+
+	#if is_paying and payout_tween and payout_tween.is_running():
+		## Update labels using our tracking variables
+		#$"UI/Control/WinAmtLabel".text = "WIN " + str(int(animated_win))
+		#$"UI/Control/CreditLabel".text = "CREDIT $" + str(int(animated_credits))
+		#
+		## Sound chatter
+		#var current_int_credit = int(animated_credits)
+		#if current_int_credit > last_sound_credit:
+			#if $WinSound and not $WinSound.playing:
+				##$WinSound.stop()
+				#$WinSound.play()
+			#last_sound_credit = current_int_credit
+
+
 # ========= User Functions ===============
 
 func hold_sig(num):
@@ -186,17 +224,65 @@ func deal_draw_sig():
 	Input.action_press("Deal_Draw")
 	Input.action_release("Deal_Draw")
 
+#func payout_sig(w):  === original code ===
+	#var amt: int = 0
+	#is_paying = true
+	#$PayoutTimer.wait_time = 0.005 if w > 45 else 0.025
+	#$PayoutTimer.start()
+	#for x in range(w):
+		#amt += 1
+		#$UI/Control/WinAmtLabel.text = "WIN " + str(amt)
+		#await $PayoutTimer.timeout
+	#is_paying = false
+	
+# === NEW TWEEN CODE ===	
 func payout_sig(w):
-	var amt: int = 0
 	is_paying = true
-	$PayoutTimer.wait_time = 0.005 if w > 45 else 0.025
-	$PayoutTimer.start()
-	for x in range(w):
-		amt += 1
-		$UI/Control/WinAmtLabel.text = "WIN " + str(amt)
-		await $PayoutTimer.timeout
-	is_paying = false
+	
+	# Start exactly where your bankroll is right now (e.g., 95)
+	var starting_credits = credits
+	
+	# Calculate exactly where the visual count needs to stop (e.g., 4095)
+	var target_credits = credits + w
+	
+	animated_win = 0.0
+	animated_credits = float(starting_credits)
+	last_sound_credit = starting_credits
+	
+	sound_interval_timer = 0.0 
+	
+	$WinSound.stream = preload("res://assets/short_win.mp3")
+	
+	if payout_tween and payout_tween.is_running():
+		payout_tween.kill()
 		
+	payout_tween = create_tween()
+	
+	# Set your custom durations
+	var duration: float = 1.0
+	if w >= 4000:
+		duration = 8.0      # Snappy Royal Flush
+	elif w >= 125:
+		duration = 5.0      # 4 of a Kind
+	else:
+		duration = clamp(w * 0.06, 0.5, 3.0)
+	
+	# ANIMATE SCRIPT VARIABLES
+	payout_tween.parallel().tween_property(self, "animated_win", float(w), duration).set_trans(Tween.TRANS_LINEAR)
+	# Explicitly target 'target_credits' so the numbers physically roll up!
+	payout_tween.parallel().tween_property(self, "animated_credits", float(target_credits), duration).set_trans(Tween.TRANS_LINEAR)
+	
+	payout_tween.tween_callback(_on_payout_complete)
+
+func _on_payout_complete():
+	is_paying = false
+	#credits += win_amt
+	$"UI/Control/WinAmtLabel".text = "WIN " + str(int(animated_win))
+	$"UI/Control/CreditLabel".text = "CREDIT $" + str(credits)
+	
+	if $WinSound:
+		$WinSound.stop()	
+	
 func bet_one_sig():
 	if new_hand and !is_paying:
 		bet_amt += 1
@@ -390,12 +476,12 @@ func draw_cards():
 	# THIS CAUSED A NASTY ERROR when using SPACEBAR to 'draw'
 	# but only after using the Deal/Draw button beore it.
 	
-#	print('===== rigged hand ======')
-#	hand_values=[10,11,12,13,14]
-#	hand_suits=['h','h','h','h','h']
-#	for i in range(5):
-#		final_hand[i].value = hand_values[i]
-#		final_hand[i].suit = hand_suits[i]
+	#print('===== rigged hand ======')
+	#hand_values=[11,12,13,10,8]
+	#hand_suits=['h','h','h','h','h']		# ============== TESTING BIG HANDS!! ==================
+	#for i in range(5):
+		#final_hand[i].value = hand_values[i]
+		#final_hand[i].suit = hand_suits[i]
 	
 	print("Final hand:  ",final_hand[0].get_card_name() + ' ', final_hand[1].get_card_name() + ' ',
 	final_hand[2].get_card_name() + ' ', final_hand[3].get_card_name() + ' ', final_hand[4].get_card_name())
@@ -437,9 +523,9 @@ func evaluate_final_hand(fh):
 	st = is_straight(hand_values)
 		
 	if is_roy_flush(hand_values): # royal flush
-		$WinSound.stream = preload("res://assets/BusyCity.mp3")
-		$WinSound.play()
-		$WinSound.play()
+		#$WinSound.stream = preload("res://assets/BusyCity.mp3")
+		#$WinSound.play()
+		#$WinSound.play()
 		if bet_amt < 5:
 			win_amt = bet_amt * 250
 			payout_signal.emit(win_amt)
@@ -454,8 +540,8 @@ func evaluate_final_hand(fh):
 		return
 	
 	if is_str_flush(): # straight flush
-		$WinSound.stream = preload("res://assets/win6.mp3")
-		$WinSound.play()
+		#$WinSound.stream = preload("res://assets/win6.mp3")
+		#$WinSound.play()
 		win_amt = bet_amt * 50
 		payout_signal.emit(win_amt)
 		credits += win_amt
@@ -466,8 +552,8 @@ func evaluate_final_hand(fh):
 		return
 	
 	if is_foak(hand_values): # four of a kind
-		$WinSound.stream = preload("res://assets/win3.mp3")
-		$WinSound.play()
+		#$WinSound.stream = preload("res://assets/win3.mp3")
+		#$WinSound.play()
 		win_amt = bet_amt * 25
 		payout_signal.emit(win_amt)
 		credits += win_amt
@@ -478,8 +564,8 @@ func evaluate_final_hand(fh):
 		return
 		
 	if is_full(hand_values): # full house
-		$WinSound.stream = preload("res://assets/win2.mp3")
-		$WinSound.play()
+		#$WinSound.stream = preload("res://assets/win2.mp3")
+		#$WinSound.play()
 		win_amt = bet_amt * 9
 		payout_signal.emit(win_amt)
 		credits += win_amt
@@ -490,8 +576,8 @@ func evaluate_final_hand(fh):
 		return
 		
 	if fl:						# flush
-		$WinSound.stream = preload("res://assets/short_win.mp3")
-		$WinSound.play()
+		#$WinSound.stream = preload("res://assets/short_win.mp3")
+		#$WinSound.play()
 		win_amt = bet_amt * 6
 		payout_signal.emit(win_amt)
 		credits += win_amt
@@ -502,8 +588,8 @@ func evaluate_final_hand(fh):
 		return
 		
 	if st:						# straight
-		$WinSound.stream = preload("res://assets/short_win.mp3")
-		$WinSound.play()
+		#$WinSound.stream = preload("res://assets/short_win.mp3")
+		#$WinSound.play()
 		win_amt = bet_amt * 4
 		payout_signal.emit(win_amt)
 		credits += win_amt
@@ -514,8 +600,8 @@ func evaluate_final_hand(fh):
 		return
 		
 	if is_toak(hand_values):	# three of a kind
-		$WinSound.stream = preload("res://assets/short_win.mp3")
-		$WinSound.play()
+		#$WinSound.stream = preload("res://assets/short_win.mp3")
+		#$WinSound.play()
 		win_amt = bet_amt * 3
 		payout_signal.emit(win_amt)
 		credits += win_amt
@@ -526,8 +612,8 @@ func evaluate_final_hand(fh):
 		return
 		
 	if is_two_pair(hand_values):	# two pair
-		$WinSound.stream = preload("res://assets/short_win.mp3")
-		$WinSound.play()
+		#$WinSound.stream = preload("res://assets/short_win.mp3")
+		#$WinSound.play()
 		win_amt = bet_amt * 2
 		payout_signal.emit(win_amt)
 		credits += win_amt
@@ -538,8 +624,8 @@ func evaluate_final_hand(fh):
 		return
 		
 	if is_job(hand_values):	# jacks or better
-		$WinSound.stream = preload("res://assets/short_win.mp3")
-		$WinSound.play()
+		#$WinSound.stream = preload("res://assets/short_win.mp3")
+		#$WinSound.play()
 		win_amt = bet_amt
 		payout_signal.emit(win_amt)
 		credits += win_amt
