@@ -41,6 +41,14 @@ var payout_tween: Tween
 
 var sound_interval_timer: float = 0.0
 
+#  ====== NEW CFG VARS ======
+var total_hands := 0
+var net_credits := 0
+var config := ConfigFile.new()
+const CFG_FILE := "user://stats.cfg"
+
+
+
 func _ready(): # ===== READY =====
 	randomize() # Reseed the RNG.
 	rand_card_back = randi_range(0,1)
@@ -92,8 +100,18 @@ func _ready(): # ===== READY =====
 	is_paying = false
 	show_bet_amt_column()
 	$CrowdNoise.play()
-	
-	#test.append(Sprite2D.new()) # Just testing ...
+
+# === Stats CFG ===
+	load_stats()
+
+	#print("Hands: ", total_hands)
+	#print("Credits: ", net_credits)
+
+	total_hands += 5
+	net_credits += 15
+
+	save_stats()
+	print(ProjectSettings.globalize_path(CFG_FILE))
 	
 func _process(delta): # ========================== This IS the GAME LOOP ======
 	# === quit game === 
@@ -696,3 +714,32 @@ func game_over():
 	print("Game Over!")
 	await get_tree().create_timer(1.5).timeout
 	get_tree().quit()
+
+
+# === stats CFG stuff ===
+
+func load_stats():
+	var err = config.load(CFG_FILE)
+
+	if err != OK:
+		create_stats_file()
+		return
+
+	total_hands = config.get_value("stats", "total_hands", 0)
+	net_credits = config.get_value("stats", "net_credits", 0)
+	
+func create_stats_file():
+	total_hands = 0
+	net_credits = 0
+
+	config.set_value("stats", "total_hands", total_hands)
+	config.set_value("stats", "net_credits", net_credits)
+
+	config.save(CFG_FILE)
+	
+func save_stats():
+	config.set_value("stats", "total_hands", total_hands)
+	config.set_value("stats", "net_credits", net_credits)
+
+	config.save(CFG_FILE)
+	
