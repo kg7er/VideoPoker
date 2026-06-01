@@ -22,16 +22,19 @@ var hand_name: String
 var new_hand: bool
 var bet_amt: int
 var win_amt: int
-var credits: int
+
 var fl: bool # flush
 var st: bool # straight
-var hands_played: int
+
 var deal_texture
 var drawTexture
 var is_paying: bool
 var high_credits: int
 var low_credits: int
 var rand_card_back: int
+
+var hands_played: int
+var credits: int
 
 #  ====== NEW TWEEN VARS ======
 var animated_win: float = 0.0
@@ -43,13 +46,15 @@ var sound_interval_timer: float = 0.0
 
 #  ====== NEW CFG VARS ======
 var total_hands := 0
-var net_credits := 0
+var total_credits := 0
+var avg_per_hand := 0.0
 var config := ConfigFile.new()
 const CFG_FILE := "user://stats.cfg"
 
 
 
 func _ready(): # ===== READY =====
+	get_tree().set_auto_accept_quit(false)
 	randomize() # Reseed the RNG.
 	rand_card_back = randi_range(0,1)
 
@@ -104,14 +109,8 @@ func _ready(): # ===== READY =====
 # === Stats CFG ===
 	load_stats()
 
-	#print("Hands: ", total_hands)
-	#print("Credits: ", net_credits)
-
-	total_hands += 5
-	net_credits += 15
-
-	save_stats()
-	print(ProjectSettings.globalize_path(CFG_FILE))
+	#save_stats()
+	#print(ProjectSettings.globalize_path(CFG_FILE))
 	
 func _process(delta): # ========================== This IS the GAME LOOP ======
 	# === quit game === 
@@ -297,7 +296,6 @@ func _on_payout_complete():
 	#credits += win_amt
 	$"UI/Control/WinAmtLabel".text = "WIN " + str(int(animated_win))
 	$"UI/Control/CreditLabel".text = "CREDIT $" + str(credits)
-	
 	if $WinSound:
 		$WinSound.stop()	
 	
@@ -510,7 +508,7 @@ func update_credits():
 	if credits < 1:
 		credits = 0
 	$UI/Control/CreditLabel.text = "CREDIT  $" + str(credits)
-	#$UI/Control/HandsLabel.text = "HANDS  " + str(hands_played)
+	#total_credits += credits #cfg stuff  THIS IS WRONG
 	
 func show_held_cards():
 	print(held_cards)
@@ -711,6 +709,7 @@ func is_roy_flush(hv) -> bool:
 	return false
 		
 func game_over():
+	save_stats()
 	print("Game Over!")
 	await get_tree().create_timer(1.5).timeout
 	get_tree().quit()
@@ -720,26 +719,41 @@ func game_over():
 
 func load_stats():
 	var err = config.load(CFG_FILE)
-
 	if err != OK:
 		create_stats_file()
 		return
 
 	total_hands = config.get_value("stats", "total_hands", 0)
-	net_credits = config.get_value("stats", "net_credits", 0)
+	total_credits = config.get_value("stats", "total_credits", 0) # this needs fixing
+	avg_per_hand = config.get_value("stats", "avg_per_hand", 0)
 	
 func create_stats_file():
 	total_hands = 0
-	net_credits = 0
+	total_credits = 0
+	avg_per_hand = 0.0
 
 	config.set_value("stats", "total_hands", total_hands)
-	config.set_value("stats", "net_credits", net_credits)
-
+	config.set_value("stats", "total_credits", total_credits)
+	config.set_value("stats", "avg_per_hand", avg_per_hand)
 	config.save(CFG_FILE)
 	
 func save_stats():
+	total_hands += hands_played
+	total_credits += (credits -100)
+	avg_per_hand = total_credits / (hands_played)
+	
 	config.set_value("stats", "total_hands", total_hands)
-	config.set_value("stats", "net_credits", net_credits)
+	config.set_value("stats", "total_credits", total_credits)
+	config.set_value("stats", "avg_per_hand", avg_per_hand)
 
 	config.save(CFG_FILE)
 	
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		print("Close requested - saving stats")
+		save_stats()
+		get_tree().quit()
+
+#func exit_tree():
+	#print('Saving stats ...')
+	#save_stats()
