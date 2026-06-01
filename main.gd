@@ -93,7 +93,8 @@ func _ready(): # ===== READY =====
 	new_hand = true
 	hand_name = ""
 	
-	#card_back_color = "blue_card_back.png" if rand_card_back == 0 else "red_card_back.png"
+	card_back_color = "blue_card_back.png" if rand_card_back == 1 else "red_card_back.png"
+	print(rand_card_back)
 	card_backs_showing = true
 	
 	# Make a fresh deck of cards,
@@ -107,7 +108,7 @@ func _ready(): # ===== READY =====
 	$CrowdNoise.play()
 
 # === Stats CFG ===
-	load_stats()
+	#load_stats()
 
 	#save_stats()
 	#print(ProjectSettings.globalize_path(CFG_FILE))
@@ -709,6 +710,7 @@ func is_roy_flush(hv) -> bool:
 	return false
 		
 func game_over():
+	load_stats()
 	save_stats()
 	print("Game Over!")
 	await get_tree().create_timer(1.5).timeout
@@ -725,7 +727,7 @@ func load_stats():
 
 	total_hands = config.get_value("stats", "total_hands", 0)
 	total_credits = config.get_value("stats", "total_credits", 0) # this needs fixing
-	avg_per_hand = config.get_value("stats", "avg_per_hand", 0)
+	#avg_per_hand = config.get_value("stats", "avg_per_hand", 0)
 	
 func create_stats_file():
 	total_hands = 0
@@ -740,7 +742,7 @@ func create_stats_file():
 func save_stats():
 	total_hands += hands_played
 	total_credits += (credits -100)
-	avg_per_hand = total_credits / (hands_played)
+	avg_per_hand = total_credits / float(total_hands)
 	
 	config.set_value("stats", "total_hands", total_hands)
 	config.set_value("stats", "total_credits", total_credits)
@@ -751,6 +753,7 @@ func save_stats():
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		print("Close requested - saving stats")
+		load_stats()
 		save_stats()
 		get_tree().quit()
 
