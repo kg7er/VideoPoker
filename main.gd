@@ -108,10 +108,8 @@ func _ready(): # ===== READY =====
 	$CrowdNoise.play()
 
 # === Stats CFG ===
-	#load_stats()
-
-	#save_stats()
-	#print(ProjectSettings.globalize_path(CFG_FILE))
+	load_stats()
+	#print(total_hands, total_credits, avg_per_hand)
 	
 func _process(delta): # ========================== This IS the GAME LOOP ======
 	# === quit game === 
@@ -710,7 +708,7 @@ func is_roy_flush(hv) -> bool:
 	return false
 		
 func game_over():
-	load_stats()
+	#load_stats()
 	save_stats()
 	print("Game Over!")
 	await get_tree().create_timer(1.5).timeout
@@ -726,8 +724,8 @@ func load_stats():
 		return
 
 	total_hands = config.get_value("stats", "total_hands", 0)
-	total_credits = config.get_value("stats", "total_credits", 0) # this needs fixing
-	#avg_per_hand = config.get_value("stats", "avg_per_hand", 0)
+	total_credits = config.get_value("stats", "total_credits", 0) 
+	avg_per_hand = config.get_value("stats", "avg_per_hand", 0)
 	
 func create_stats_file():
 	total_hands = 0
@@ -742,7 +740,11 @@ func create_stats_file():
 func save_stats():
 	total_hands += hands_played
 	total_credits += (credits -100)
-	avg_per_hand = total_credits / float(total_hands)
+	if total_hands > 0:
+		#avg_per_hand = total_credits / float(total_hands)
+		avg_per_hand = round((total_credits / float(total_hands)) * 100.0) / 100.0
+	else:
+		avg_per_hand = 0.0
 	
 	config.set_value("stats", "total_hands", total_hands)
 	config.set_value("stats", "total_credits", total_credits)
@@ -753,10 +755,6 @@ func save_stats():
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		print("Close requested - saving stats")
-		load_stats()
+		#load_stats()
 		save_stats()
 		get_tree().quit()
-
-#func exit_tree():
-	#print('Saving stats ...')
-	#save_stats()
