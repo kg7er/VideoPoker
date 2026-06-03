@@ -225,3 +225,4 @@ autostart = true
 [node name="CrowdNoise" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("10_x3kbr")
 volume_db = -21.86
+max_polyphony = 4

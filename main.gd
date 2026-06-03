@@ -100,7 +100,6 @@ func _ready(): # ===== READY =====
 	# Make a fresh deck of cards,
 	open_fresh_deck() 	# which we'll create only once per session.
 	show_card_backs()
-	#$HoldTimer.start()
 	deal_texture = preload("res://assets/deal_button.png")
 	drawTexture = preload("res://assets/draw_button.png")
 	is_paying = false
@@ -109,7 +108,6 @@ func _ready(): # ===== READY =====
 
 # === Stats CFG ===
 	load_stats()
-	#print(total_hands, total_credits, avg_per_hand)
 	
 func _process(delta): # ========================== This IS the GAME LOOP ======
 	# === quit game === 
@@ -173,18 +171,13 @@ func _process(delta): # ========================== This IS the GAME LOOP ======
 		new_hand = true
 		$UI/Control/DealDrawButton.texture_normal = deal_texture
 		
-	
-
-		
 	# === Get Bet amount input ===
 	if Input.is_action_just_pressed("Bet_Less") and new_hand and bet_amt > 0 and !is_paying: # < key
 		change_bet(-1)
 		#show_bet_amt_column()
 	if Input.is_action_just_pressed("Bet_More") and new_hand and bet_amt > 0 and !is_paying: # > key
 		change_bet(1)
-		#show_bet_amt_column()	
 	
-		
 	# === Hold/Unhold input ===
 	if !new_hand and !is_paying:
 		if Input.is_action_just_pressed("Hold_0"): # 1 key
@@ -200,7 +193,6 @@ func _process(delta): # ========================== This IS the GAME LOOP ======
 
 # === TWEEN STUFF ADDED ===
 	if is_paying and payout_tween and payout_tween.is_running():
-		# Keep your label text updating smoothly
 		$"UI/Control/WinAmtLabel".text = "WIN " + str(int(animated_win))
 		$"UI/Control/CreditLabel".text = "CREDIT $" + str(int(animated_credits))
 		
@@ -239,17 +231,6 @@ func hold_sig(num):
 func deal_draw_sig():
 	Input.action_press("Deal_Draw")
 	Input.action_release("Deal_Draw")
-
-#func payout_sig(w):  === original code ===
-	#var amt: int = 0
-	#is_paying = true
-	#$PayoutTimer.wait_time = 0.005 if w > 45 else 0.025
-	#$PayoutTimer.start()
-	#for x in range(w):
-		#amt += 1
-		#$UI/Control/WinAmtLabel.text = "WIN " + str(amt)
-		#await $PayoutTimer.timeout
-	#is_paying = false
 	
 # === NEW TWEEN CODE ===	
 func payout_sig(w):
@@ -285,7 +266,6 @@ func payout_sig(w):
 	
 	# ANIMATE SCRIPT VARIABLES
 	payout_tween.parallel().tween_property(self, "animated_win", float(w), duration).set_trans(Tween.TRANS_LINEAR)
-	# Explicitly target 'target_credits' so the numbers physically roll up!
 	payout_tween.parallel().tween_property(self, "animated_credits", float(target_credits), duration).set_trans(Tween.TRANS_LINEAR)
 	
 	payout_tween.tween_callback(_on_payout_complete)
@@ -315,13 +295,16 @@ func bet_max_sig():
 		$UI/Control/BetLabel.text = "BET  " + str(bet_amt)
 		show_bet_amt_column()
 		
-func info_sig():
+func info_sig(): #Toggle session stats or JOB logo
 	var box_text: String
 	var avg_wl: float
 	
-	avg_wl = (credits - 100.0) / hands_played
+	if hands_played > 0:
+		avg_wl = (credits - 100.0) / hands_played
+	else:
+		avg_wl = 0.0
 	box_text = "Hands played: %s \n" % hands_played
-	box_text += "Avg win/loss per hand: $%.2f \n" % avg_wl
+	box_text += "Avg win/loss per hand: $%.2f \n" % avg_wl	
 	box_text += "High/Low credits: %s / %s" % [high_credits, low_credits]
 	
 	$InfoBox.text = box_text
@@ -331,19 +314,7 @@ func info_sig():
 		$InfoBox.visible = true
 	else:
 		$InfoBox.visible = false
-		$JOBLogo.self_modulate = Color(1,1,1,1)
-	
-#func set_bet(amt):
-#	bet_amt = amt
-#
-#	if bet_amt > 5:
-#		bet_amt = 5
-#	if bet_amt < 1:
-#		bet_amt = 1
-#	if bet_amt > credits and credits > 0:
-#		bet_amt = credits
-#
-#	$UI/Control/BetLabel.text = "BET  " + str(bet_amt)				
+		$JOBLogo.self_modulate = Color(1,1,1,1)			
 	
 func change_bet(amt): # this is for using the < and > keys
 	bet_amt += amt
@@ -399,29 +370,23 @@ func show_bet_amt_column():
 	else:
 		$B5Rect.visible = false
 		
-	#print('In show_bet_amt_column.')	
 
 func show_cards(h):
 	if h.is_empty():
 		return
 	if not held_cards[0]:
-		#$Card0.texture = load("res://assets/cards/"+ h[0].get_card_image())
 		$Card0.texture = card_textures[h[0].get_card_id()]
 		await $FlipTimer.timeout
 	if not held_cards[1]:
-		#$Card1.texture = load("res://assets/cards/"+ h[1].get_card_image())
 		$Card1.texture = card_textures[h[1].get_card_id()]
 		await $FlipTimer.timeout
 	if not held_cards[2]:
-		#$Card2.texture = load("res://assets/cards/"+ h[2].get_card_image())
 		$Card2.texture = card_textures[h[2].get_card_id()]
 		await $FlipTimer.timeout
 	if not held_cards[3]:
-		#$Card3.texture = load("res://assets/cards/"+ h[3].get_card_image())
 		$Card3.texture = card_textures[h[3].get_card_id()]
 		await $FlipTimer.timeout
 	if not held_cards[4]:
-		#$Card4.texture = load("res://assets/cards/"+ h[4].get_card_image())
 		$Card4.texture = card_textures[h[4].get_card_id()]
 		await $FlipTimer.timeout
 		
@@ -453,7 +418,6 @@ func show_card_backs():
 		
 	
 func open_fresh_deck(): # Should only run once.
-	#print('Opening a fresh deck of cards.')
 	for x in range(4):
 		for y in range(13):
 			card = Card.new(values[y],suits[x])
@@ -461,14 +425,12 @@ func open_fresh_deck(): # Should only run once.
 # -------------------	
 	
 func shuffle_deck():
-	#print('Shuffling deck ...')
 	deck.clear()
 	for i in range(52):
 		deck.append(fresh_deck[i])
 	deck.shuffle()
 	
 func clear_held_cards():
-#	print('Clearing held cards.')
 	held_cards = [false, false, false, false, false]
 	show_held_labels(held_cards)
 	
@@ -487,27 +449,21 @@ func draw_cards():
 		if !held_cards[i]:
 			dealt_hand[i] = draw_hand[i]
 	final_hand = dealt_hand.duplicate(true)
-	#dealt_hand.clear() 
-	# THIS CAUSED A NASTY ERROR when using SPACEBAR to 'draw'
-	# but only after using the Deal/Draw button beore it.
 	
-	#print('===== rigged hand ======')
+	# ============== TESTING BIG HANDS!! ==================
 	#hand_values=[11,12,13,10,8]
-	#hand_suits=['h','h','h','h','h']		# ============== TESTING BIG HANDS!! ==================
+	#hand_suits=['h','h','h','h','h']		
 	#for i in range(5):
 		#final_hand[i].value = hand_values[i]
 		#final_hand[i].suit = hand_suits[i]
 	
 	print("Final hand:  ",final_hand[0].get_card_name() + ' ', final_hand[1].get_card_name() + ' ',
 	final_hand[2].get_card_name() + ' ', final_hand[3].get_card_name() + ' ', final_hand[4].get_card_name())
-#	print(hand_name + 'line 238 -- draw_cards()')
-#	print("line 239 Hands played: " + str(hands_played) + "\n")
 	
 func update_credits():
 	if credits < 1:
 		credits = 0
 	$UI/Control/CreditLabel.text = "CREDIT  $" + str(credits)
-	#total_credits += credits #cfg stuff  THIS IS WRONG
 	
 func show_held_cards():
 	print(held_cards)
@@ -528,19 +484,15 @@ func evaluate_final_hand(fh):
 	for i in range(5):
 		hand_values.append(fh[i].value)
 		hand_suits.append(fh[i].suit)
-	hand_values.sort()
-	hand_suits.sort()
-	#print(hand_values, hand_suits)
+	hand_values.sort()					# values are SORTED here
+	hand_suits.sort()					# suits are SORTED here
 	win_amt = 0
 	
-	# -------- winning hands -----
+	# -------- winning hands ----- === everything is already sorted, both values and suits ===
 	fl = is_flush(hand_suits)
 	st = is_straight(hand_values)
 		
 	if is_roy_flush(hand_values): # royal flush
-		#$WinSound.stream = preload("res://assets/BusyCity.mp3")
-		#$WinSound.play()
-		#$WinSound.play()
 		if bet_amt < 5:
 			win_amt = bet_amt * 250
 			payout_signal.emit(win_amt)
@@ -555,8 +507,6 @@ func evaluate_final_hand(fh):
 		return
 	
 	if is_str_flush(): # straight flush
-		#$WinSound.stream = preload("res://assets/win6.mp3")
-		#$WinSound.play()
 		win_amt = bet_amt * 50
 		payout_signal.emit(win_amt)
 		credits += win_amt
@@ -567,8 +517,6 @@ func evaluate_final_hand(fh):
 		return
 	
 	if is_foak(hand_values): # four of a kind
-		#$WinSound.stream = preload("res://assets/win3.mp3")
-		#$WinSound.play()
 		win_amt = bet_amt * 25
 		payout_signal.emit(win_amt)
 		credits += win_amt
@@ -579,8 +527,6 @@ func evaluate_final_hand(fh):
 		return
 		
 	if is_full(hand_values): # full house
-		#$WinSound.stream = preload("res://assets/win2.mp3")
-		#$WinSound.play()
 		win_amt = bet_amt * 9
 		payout_signal.emit(win_amt)
 		credits += win_amt
@@ -590,9 +536,7 @@ func evaluate_final_hand(fh):
 		$UI/Control/PayTableGrid/TableLabel18.set("theme_override_colors/font_color", Color(1,1,1))
 		return
 		
-	if fl:						# flush
-		#$WinSound.stream = preload("res://assets/short_win.mp3")
-		#$WinSound.play()
+	if fl:						# is a flush
 		win_amt = bet_amt * 6
 		payout_signal.emit(win_amt)
 		credits += win_amt
@@ -602,9 +546,7 @@ func evaluate_final_hand(fh):
 		$UI/Control/PayTableGrid/TableLabel24.set("theme_override_colors/font_color", Color(1,1,1))
 		return
 		
-	if st:						# straight
-		#$WinSound.stream = preload("res://assets/short_win.mp3")
-		#$WinSound.play()
+	if st:						# is a straight
 		win_amt = bet_amt * 4
 		payout_signal.emit(win_amt)
 		credits += win_amt
@@ -615,8 +557,6 @@ func evaluate_final_hand(fh):
 		return
 		
 	if is_toak(hand_values):	# three of a kind
-		#$WinSound.stream = preload("res://assets/short_win.mp3")
-		#$WinSound.play()
 		win_amt = bet_amt * 3
 		payout_signal.emit(win_amt)
 		credits += win_amt
@@ -627,8 +567,6 @@ func evaluate_final_hand(fh):
 		return
 		
 	if is_two_pair(hand_values):	# two pair
-		#$WinSound.stream = preload("res://assets/short_win.mp3")
-		#$WinSound.play()
 		win_amt = bet_amt * 2
 		payout_signal.emit(win_amt)
 		credits += win_amt
@@ -639,24 +577,17 @@ func evaluate_final_hand(fh):
 		return
 		
 	if is_job(hand_values):	# jacks or better
-		#$WinSound.stream = preload("res://assets/short_win.mp3")
-		#$WinSound.play()
 		win_amt = bet_amt
 		payout_signal.emit(win_amt)
 		credits += win_amt
 		hand_name = 'JACKS OR BETTER'
-		#$UI/Control/WinHandLabel. text = hand_name
-		#$UI/Control/WinAmtLabel. text = 'WIN  ' + str(win_amt)
 		$UI/Control/PayTableGrid/TableLabel48.set("theme_override_colors/font_color", Color(1,1,1)) # this works!
 		return
 	
 	hand_name = '' # nothing
 	$UI/Control/WinHandLabel. text = hand_name
-	#$WinSound.play()
-	#$UI/Control/PayTableGrid/TableLabel48.set("theme_override_colors/font_color",null)
 	return
-	
-	
+	#==================================
 	
 func is_job(hv) -> bool:
 	if hv[0] == hv[1] and hv[1] >= 11: return true
@@ -685,9 +616,7 @@ func is_straight(hv) -> bool:
 	return false
 
 func is_flush(hs):
-#	if hs[0] == hs[1] and hs[1] == hs[2] \
-#	and hs[2] == hs[3] and hs[3] == hs[4]: return true
-	if hs[0] == hs[4]: return true
+	if hs[0] == hs[4]: return true # because suits are already sorted.
 	return false
 	
 func is_full(hv) -> bool:
@@ -708,7 +637,6 @@ func is_roy_flush(hv) -> bool:
 	return false
 		
 func game_over():
-	#load_stats()
 	save_stats()
 	print("Game Over!")
 	await get_tree().create_timer(1.5).timeout
@@ -716,7 +644,6 @@ func game_over():
 
 
 # === stats CFG stuff ===
-
 func load_stats():
 	var err = config.load(CFG_FILE)
 	if err != OK:
@@ -741,7 +668,6 @@ func save_stats():
 	total_hands += hands_played
 	total_credits += (credits -100)
 	if total_hands > 0:
-		#avg_per_hand = total_credits / float(total_hands)
 		avg_per_hand = round((total_credits / float(total_hands)) * 100.0) / 100.0
 	else:
 		avg_per_hand = 0.0
@@ -755,6 +681,5 @@ func save_stats():
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		print("Close requested - saving stats")
-		#load_stats()
 		save_stats()
 		get_tree().quit()
