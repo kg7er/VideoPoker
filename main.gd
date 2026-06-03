@@ -643,7 +643,8 @@ func create_stats_file():
 	total_hands = 0
 	total_credits = 0
 	avg_per_hand = 0.0
-
+	config.clear()
+	
 	config.set_value("stats", "total_hands", total_hands)
 	config.set_value("stats", "total_credits", total_credits)
 	config.set_value("stats", "avg_per_hand", avg_per_hand)
