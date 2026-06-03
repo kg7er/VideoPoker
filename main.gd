@@ -135,7 +135,7 @@ func _process(delta): # ========================== This IS the GAME LOOP ======
 			hand_name = ''
 			$UI/Control/WinHandLabel.text = hand_name
 			$UI/Control/WinAmtLabel.text = 'WIN  '
-			#open_fresh_deck()
+			
 			shuffle_deck()
 			clear_held_cards()
 			if not card_backs_showing:
@@ -144,7 +144,6 @@ func _process(delta): # ========================== This IS the GAME LOOP ======
 			card_backs_showing = false
 			deal_hand()
 			show_cards(dealt_hand) # showing in deal_hand() right now
-			#evaluate_pre-draw_hand()
 			$UI/Control/DealDrawButton.texture_normal = drawTexture
 	elif Input.is_action_just_released("Deal_Draw") and !new_hand and !is_paying: # spacebar or Draw button
 		if $InfoBox.visible:
@@ -159,11 +158,11 @@ func _process(delta): # ========================== This IS the GAME LOOP ======
 		low_credits = credits if credits < low_credits else low_credits
 		if credits < 1:
 			bet_amt = 0
+			
 		if len(hand_name) > 0:
 			print(hand_name)
 		else:
 			print(" -- nothing --")
-		#print(hand_name) if len(hand_name) > 0 else print(" -- nothing --") # ternary operator!
 		print("Payout: $%d." % win_amt)
 		print("Credits: $%d." % credits)
 		hands_played += 1
@@ -206,20 +205,6 @@ func _process(delta): # ========================== This IS the GAME LOOP ======
 				#$WinSound.stop() # Interrupts the old tail cleanly
 				$WinSound.play() # Fires the crisp start of the sound
 			sound_interval_timer = 0.0 # Reset the clock for the next beat
-
-	#if is_paying and payout_tween and payout_tween.is_running():
-		## Update labels using our tracking variables
-		#$"UI/Control/WinAmtLabel".text = "WIN " + str(int(animated_win))
-		#$"UI/Control/CreditLabel".text = "CREDIT $" + str(int(animated_credits))
-		#
-		## Sound chatter
-		#var current_int_credit = int(animated_credits)
-		#if current_int_credit > last_sound_credit:
-			#if $WinSound and not $WinSound.playing:
-				##$WinSound.stop()
-				#$WinSound.play()
-			#last_sound_credit = current_int_credit
-
 
 # ========= User Functions ===============
 
