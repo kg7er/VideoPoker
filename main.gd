@@ -49,8 +49,9 @@ var total_hands := 0
 var total_credits := 0
 var avg_per_hand := 0.0
 var config := ConfigFile.new()
-const CFG_FILE := "user://stats.cfg"
 
+const CFG_FILE := "user://VideoPoker12.cfg"
+#const CFG_FILE := "user://stats.cfg"
 
 
 func _ready(): # ===== READY =====
